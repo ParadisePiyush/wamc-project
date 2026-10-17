@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <title>PulseGrid | Wireless Sensor Network</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview"><span class="brand-mark">⌁</span><span><b>PulseGrid</b><small>WIRELESS SENSOR NETWORK</small></span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-view="nodes"><span>◉</span> Sensor nodes <em id="nodeNavCount">8</em></button>
+        <button class="nav-item" data-view="network"><span>⌁</span> Network map</button>
+        <button class="nav-item" data-view="analytics"><span>▥</span> Analytics</button>
+        <button class="nav-item" data-view="alerts"><span>⚑</span> Alerts <em class="alert-count" id="alertNavCount">2</em></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="demo-card"><span class="pulse-dot"></span><div><b>Live simulation</b><small>Data refreshes every 3 sec</small></div><label class="switch"><input type="checkbox" id="simulationToggle" checked><span></span></label></div>
+        <div class="profile"><div class="avatar">PG</div><div><b>Project Console</b><small>Student edition</small></div><span class="more">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Wireless Systems <span>/</span> <b id="pageName">Overview</b></div>
+        <div class="top-actions"><span class="system-status"><i></i> System operational</span><button class="icon-button" id="exportBtn" title="Export sensor data as CSV">⇩</button><div class="date-chip" id="clock">--:--:--</div></div>
+      </header>
+
+      <section class="view active-view" id="overviewView">
+        <div class="page-heading"><div><div class="eyebrow">NETWORK CONTROL CENTER <span class="live-pill"><i></i> LIVE DEMO</span></div><h1>Sensor network <span>overview</span></h1><p>Monitor connected nodes, environmental conditions, and wireless link health in one place.</p></div><div class="heading-actions"><button class="btn btn-quiet" id="simulateAlertBtn">＋ Simulate alert</button><button class="btn btn-primary" id="refreshBtn">↻ Refresh data</button></div></div>
+        <div class="notice-banner"><div class="notice-icon">✦</div><div><b>Welcome to PulseGrid</b><p>This interactive dashboard uses generated sensor readings for demonstration. Connect real hardware/API data to use it as a live monitoring system.</p></div><button id="dismissNotice" aria-label="Dismiss notice">×</button></div>
+
+        <div class="metrics-grid">
+          <article class="metric-card"><div class="metric-top"><span>Connected nodes</span><span class="metric-icon mint">◉</span></div><div class="metric-value" id="connectedMetric">7<span>/8</span></div><div class="metric-foot"><span class="trend positive">↑ 1 node</span><span>from last check</span></div><div class="mini-bars" id="nodeBars"></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Average signal</span><span class="metric-icon blue">⌁</span></div><div class="metric-value" id="signalMetric">−58 <small>dBm</small></div><div class="metric-foot"><span class="trend positive">Good</span><span>RSSI estimate</span></div><div class="signal-track"><span id="signalBar"></span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Temperature</span><span class="metric-icon orange">♨</span></div><div class="metric-value" id="tempMetric">26.4 <small>°C</small></div><div class="metric-foot"><span class="trend neutral" id="tempTrend">Stable</span><span>across active nodes</span></div><div class="sparkline" id="tempSpark"></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Active alerts</span><span class="metric-icon pink">⚑</span></div><div class="metric-value" id="alertsMetric">02</div><div class="metric-foot"><span class="trend warning">Needs review</span><span>threshold monitoring</span></div><div class="alert-meter"><span id="alertMeterFill"></span></div></article>
+        </div>
+
+        <div class="content-grid main-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h2>Environmental trends</h2><p>Average sensor readings over time</p></div><div class="legend"><span><i class="legend-temp"></i> Temperature</span><span><i class="legend-hum"></i> Humidity</span></div></div><div class="chart-wrap"><canvas id="trendChart" aria-label="Temperature and humidity trend chart"></canvas></div><div class="chart-bottom"><span><i class="tiny-dot temp-dot"></i> <b id="chartTemp">26.4°C</b> current temperature</span><span><i class="tiny-dot hum-dot"></i> <b id="chartHum">54%</b> current humidity</span><span class="chart-updated">Updated just now</span></div></article>
+          <article class="panel health-panel"><div class="panel-heading"><div><h2>Network health</h2><p>Quality score from signal and uptime</p></div><button class="dots-btn" aria-label="More options">•••</button></div><div class="health-gauge"><svg viewBox="0 0 220 130" role="img" aria-label="Network health score"><path class="gauge-track" d="M 24 112 A 86 86 0 0 1 196 112"/><path id="gaugeArc" class="gauge-value" d="M 24 112 A 86 86 0 0 1 196 112"/></svg><div class="gauge-number"><b id="healthScore">92</b><span>/ 100</span></div><div class="health-status"><i></i><b id="healthLabel">Excellent</b> network health</div></div><div class="health-details"><div><span>Packet delivery</span><b id="packetDelivery">98.6%</b></div><div><span>Average latency</span><b id="latencyValue">24 ms</b></div><div><span>Node uptime</span><b id="uptimeValue">99.2%</b></div></div></article>
+        </div>
+
+        <div class="content-grid lower-grid">
+          <article class="panel nodes-panel"><div class="panel-heading"><div><h2>Sensor nodes</h2><p>Latest reading from each device</p></div><button class="text-button" data-goto="nodes">View all nodes ↗</button></div><div class="table-scroll"><table><thead><tr><th>NODE</th><th>STATUS</th><th>TEMP</th><th>HUMIDITY</th><th>SIGNAL</th></tr></thead><tbody id="nodeTableBody"></tbody></table></div><div class="panel-footer"><span id="nodeTableFooter">Showing 5 of 8 nodes</span><button class="text-button" data-goto="nodes">Manage nodes →</button></div></article>
+          <article class="panel alerts-panel"><div class="panel-heading"><div><h2>Recent alerts</h2><p>Events requiring attention</p></div><button class="text-button" data-goto="alerts">View all ↗</button></div><div class="alert-list" id="recentAlerts"></div><div class="panel-footer"><span>Automatic threshold checks enabled</span><span class="shield-label">◇ Protected</span></div></article>
+        </div>
+        <footer class="app-footer"><span>PulseGrid <b>•</b> Wireless Sensor Network Monitoring System</span><span>Academic project demo · <b id="footerDate"></b></span></footer>
+      </section>
+
+      <section class="view" id="nodesView"><div class="page-heading"><div><div class="eyebrow">DEVICE MANAGEMENT</div><h1>Sensor <span>nodes</span></h1><p>Inspect node telemetry, status, and signal strength.</p></div><div class="heading-actions"><button class="btn btn-quiet" id="addNodeBtn">＋ Add demo node</button><button class="btn btn-primary" id="nodesExportBtn">⇩ Export CSV</button></div></div><div class="toolbar"><input type="search" id="nodeSearch" placeholder="Search node name or location…"><select id="statusFilter"><option value="all">All statuses</option><option value="online">Online</option><option value="warning">Warning</option><option value="offline">Offline</option></select></div><article class="panel full-panel"><div class="table-scroll"><table><thead><tr><th>NODE / ID</th><th>LOCATION</th><th>STATUS</th><th>TEMP</th><th>HUMIDITY</th><th>BATTERY</th><th>SIGNAL</th><th>LAST SEEN</th></tr></thead><tbody id="allNodesBody"></tbody></table></div></article></section>
+
+      <section class="view" id="networkView"><div class="page-heading"><div><div class="eyebrow">TOPOLOGY VISUALIZER</div><h1>Network <span>map</span></h1><p>Illustrative star topology showing the gateway and wireless sensor links.</p></div><div class="heading-actions"><button class="btn btn-primary" id="rebuildMapBtn">↻ Rebuild links</button></div></div><article class="panel topology-panel"><div class="topology-key"><span><i class="key-online"></i> Stable link</span><span><i class="key-warning"></i> Weak link</span><span><i class="key-offline"></i> Offline</span></div><div class="topology-canvas" id="topologyCanvas"><svg id="topologySvg" aria-label="Wireless sensor network topology"></svg><div class="gateway-node"><div class="gateway-rings"><span>⌁</span></div><b>WSN Gateway</b><small>GW-001 · Coordinator</small><label><i></i> Connected</label></div><div id="topologyNodes"></div></div><div class="topology-summary"><div><span>Topology</span><b>Star network</b></div><div><span>Gateway</span><b>1 coordinator</b></div><div><span>Wireless links</span><b id="linkCount">7 active links</b></div><div><span>Protocol example</span><b>IEEE 802.15.4 / Zigbee</b></div></div></article><div class="info-callout"><b>For your viva:</b> In a star topology, each sensor node communicates with a central coordinator or gateway. The gateway can forward readings to a monitoring application. This demo visualizes links; it does not transmit radio packets.</div></section>
+
+      <section class="view" id="analyticsView"><div class="page-heading"><div><div class="eyebrow">DATA EXPLORER</div><h1>Network <span>analytics</span></h1><p>Explore sensor behavior and download readings for your project report.</p></div><div class="heading-actions"><button class="btn btn-primary" id="analyticsExportBtn">⇩ Download dataset</button></div></div><div class="metrics-grid analytics-metrics"><article class="metric-card"><div class="metric-top"><span>Readings collected</span><span class="metric-icon blue">▤</span></div><div class="metric-value" id="readingCount">1,248</div><div class="metric-foot"><span class="trend positive">Live demo</span><span>in this session</span></div></article><article class="metric-card"><div class="metric-top"><span>Mean temperature</span><span class="metric-icon orange">♨</span></div><div class="metric-value" id="meanTemp">26.4 <small>°C</small></div><div class="metric-foot"><span>Across active nodes</span></div></article><article class="metric-card"><div class="metric-top"><span>Mean humidity</span><span class="metric-icon mint">≈</span></div><div class="metric-value" id="meanHum">54 <small>%</small></div><div class="metric-foot"><span>Across active nodes</span></div></article><article class="metric-card"><div class="metric-top"><span>Low battery nodes</span><span class="metric-icon pink">▰</span></div><div class="metric-value" id="lowBatteryCount">1</div><div class="metric-foot"><span>Below 25% threshold</span></div></article></div><div class="content-grid"><article class="panel chart-panel"><div class="panel-heading"><div><h2>Node temperature comparison</h2><p>Current temperature by sensor node</p></div></div><div class="bar-chart" id="tempComparison"></div></article><article class="panel chart-panel"><div class="panel-heading"><div><h2>Signal distribution</h2><p>Number of nodes in each signal band</p></div></div><div class="distribution" id="signalDistribution"></div><div class="info-callout compact">Signal is shown as RSSI in dBm. Values closer to 0 are generally stronger; thresholds vary by radio technology and environment.</div></article></div><article class="panel dataset-panel"><div class="panel-heading"><div><h2>Latest dataset sample</h2><p>Export as CSV for spreadsheet analysis</p></div><span class="dataset-badge">CSV READY</span></div><div class="table-scroll"><table><thead><tr><th>Timestamp</th><th>Node ID</th><th>Temperature</th><th>Humidity</th><th>RSSI</th><th>Battery</th></tr></thead><tbody id="datasetBody"></tbody></table></div></article></section>
+
+      <section class="view" id="alertsView"><div class="page-heading"><div><div class="eyebrow">EVENT CENTER</div><h1>Network <span>alerts</span></h1><p>Review threshold events and acknowledge them when checked.</p></div><div class="heading-actions"><button class="btn btn-quiet" id="clearAlertsBtn">✓ Acknowledge all</button><button class="btn btn-primary" id="newAlertBtn">＋ Create demo alert</button></div></div><div class="alert-summary-grid"><div class="alert-summary"><span class="summary-icon pink">⚑</span><div><b id="openAlertsCount">2</b><small>Open alerts</small></div></div><div class="alert-summary"><span class="summary-icon orange">♨</span><div><b id="environmentAlertsCount">1</b><small>Environmental</small></div></div><div class="alert-summary"><span class="summary-icon blue">⌁</span><div><b id="networkAlertsCount">1</b><small>Connectivity</small></div></div></div><div class="alert-controls"><b>Alert timeline</b><select id="alertFilter"><option value="all">All events</option><option value="open">Open only</option><option value="acknowledged">Acknowledged</option></select></div><div class="alert-timeline" id="allAlertsList"></div><div class="info-callout"><b>Thresholds in this demo:</b> temperature above 32°C, humidity above 80%, signal weaker than −80 dBm, or battery below 20%. You can adjust these values in <code>app.js</code>.</div></section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
